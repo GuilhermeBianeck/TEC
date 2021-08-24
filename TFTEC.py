@@ -13,8 +13,8 @@ class add:
         self.new_st = new_st #New State
 
 class Turing:
-    def __init__(self,tm_ty, st, op):
-        self.ty = tm_ty #TYPE
+    def __init__(self,ty, st, op):
+        self.ty = ty #TYPE
         self.st = st #STATES
         self.op = op #OPERATION
         self.ini = "0" #INITIAL STATE
@@ -22,7 +22,6 @@ class Turing:
 def nf(turing, new_tm): #newfile Creates New File with Turing Machine Data
     with open(cur_file.name.split(".")[0] + "." + "out", 'w') as new_data:
         sys.stdout = new_data
-        print(";" + str(new_tm.ty))
         for op in new_tm.op:
                 print(str(op.cur_st) + " " + str(op.cur_sy) + " " + str(op.new_sy) + " " + str(op.di) + " " + str(op.new_st))
 
@@ -130,19 +129,20 @@ def IS(turing):
 if __name__ == "__main__":
     
     file_directory = pathName
+    ty = "I"
     for cur_file in file_directory.iterdir():
         if cur_file.is_file():
             with open(cur_file, 'r') as data_file:
                 lines = [line[:-1] for line in data_file]
                 for line in lines:
                     if line[0] == ';':
-                        mt_ty = line[1]
+                        ty = line[1]
                     else:
                         line_data = [x for x in line.split(" ")]
                         comando.append(add(line_data[0],line_data[1],line_data[2],line_data[3],line_data[4]))
 
                 st = set([x.cur_st for x in comando])
-                turing = Turing(mt_ty, st, comando)
+                turing = Turing(ty, st, comando)
 
                 if(turing.ty == "I"):
                     new_tm = IS(turing)
